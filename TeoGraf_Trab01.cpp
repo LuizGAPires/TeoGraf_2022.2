@@ -283,6 +283,7 @@ int Grafo::diametro()
 list<list<int> > Grafo::conexa()
 {   
     int v = 1;
+    int iaux = 0;
     bool achados[V], completo = false;
     list<list<int> > componentes;
 
@@ -334,9 +335,10 @@ list<list<int> > Grafo::conexa()
             }        
         }
 
-        for(int i = 0; i < V; i++){
+        for(int i = iaux; i < V; i++){
             
             if(achados[i] == false){
+                iaux = i;
                 v = i + 1;
                 break;
             }
@@ -354,8 +356,8 @@ list<list<int> > Grafo::conexa()
 
 class GrafoM // grafo com matriz de adjacência
 {
-    bool** M;
-    int V;
+    bool** M; //Ponteiro que aponta para outro ponteiro que aponta para um vetor de booleanos
+    int V; // quantidade dos vértices
 
 public:
     GrafoM(int V); // construtor
@@ -602,6 +604,7 @@ int GrafoM::diametro()
 list<list<int> > GrafoM::conexa()
 {
     int v = 1;
+    int iaux = 0;
     bool achados[V], completo = false;
     list<list<int> > componentes;
 
@@ -653,9 +656,10 @@ list<list<int> > GrafoM::conexa()
             }   
         }
 
-        for(int i = 0; i < V; i++){
+        for(int i = iaux; i < V; i++){
             if(achados[i] == false){
                 v = i + 1;
+                iaux = i;
                 break;   
             }
             else if (i == V - 1){
