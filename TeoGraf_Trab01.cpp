@@ -350,7 +350,23 @@ list<list<int> > Grafo::conexa()
         }
     }
     
-    //componentes.sort(greater<list<int> >());
+list<list<int> >::iterator itr, it;
+    for(itr = componentes.begin(); itr != componentes.end(); itr++){
+        int tam = 0;
+        list<int>x = *itr;
+        for(it = itr; it != componentes.end(); it++)
+        {
+            list<int>tl = *it;
+            int atual = tl.size();
+            if(atual > tam){
+                tam = atual;
+                *itr = tl;
+                *it = x;
+            }
+
+        }
+        
+    }/**/
     return componentes;
 }
 
@@ -668,22 +684,46 @@ list<list<int> > GrafoM::conexa()
         } 
     }
 
-    componentes.sort(greater<list<int> >());
+    list<list<int> >::iterator itr, it;
+    for(itr = componentes.begin(); itr != componentes.end(); itr++){
+        int tam = 0;
+        list<int>x = *itr;
+        for(it = itr; it != componentes.end(); it++)
+        {
+            list<int>tl = *it;
+            int atual = tl.size();
+            if(atual > tam){
+                tam = atual;
+                *itr = tl;
+                *it = x;
+            }
+
+        }
+        
+    }/**/
     return componentes;   
 }
 
 int main(){
-   int count = 0;
+    int count = 0;
     int num, num1;
     int v;
+    int gmax;
+    float medg, medianag;
+    string escolha;
     list<list<int> > x;
    fstream newfile, rfile;
-   newfile.open("grafo_6.txt",ios::in); //abre o arquivo .txt apenas para leitura
+
+    cout << "Escolha a representação do grafo (digite 'matriz' para matriz ou 'lista' para lista): ";
+    cin >> escolha;
+
+   newfile.open("grafo_3.txt" ,ios::in); //abre o arquivo .txt apenas para leitura
    if (newfile.is_open())
    {    
         newfile >> v;
-        Grafo graph(v);
-        do{
+        if(escolha == "matriz"){
+            GrafoM graph(v);
+            do{
             newfile >> num;
             newfile >> num1;
             if (!newfile.fail()) {
@@ -691,18 +731,42 @@ int main(){
                 graph.addAresta(num, num1);
                 
             }
-        } while(!newfile.fail());
+            }while(!newfile.fail());
+            gmax = graph.gmax();
+            medg = graph.media_grau();
+            medianag = graph.mediana_grau();
+            x = graph.conexa();
+        }
+        else if (escolha == "lista"){
+            Grafo graph(v);
+            do{
+            newfile >> num;
+            newfile >> num1;
+            if (!newfile.fail()) {
+                count++;
+                graph.addAresta(num, num1);
+                
+            }
+            }while(!newfile.fail());
+            gmax = graph.gmax();
+            medg = graph.media_grau();
+            medianag = graph.mediana_grau();
+            x = graph.conexa();
+        }
+        else{
+            throw runtime_error("Digite apenas 'lista' ou 'matriz'!!");
+        }
+
         newfile.close();
         //system("pause");  usado para calcular o tamanho dos grafos em memória
-        x = graph.conexa();
         
         rfile.open("resposta.txt", ios::out);// cria um arquivo e escreve no mesmo
         if (rfile.is_open()){
         rfile << "Número de Arestas: " << count << endl;
         rfile << "Número de Vertices: " << v << endl;
-        rfile << "Grau Máximo: " << graph.gmax() << endl;
-        rfile << "Média dos Graus: " << graph.media_grau() << endl;
-        rfile << "Mediana dos Graus: " << graph.mediana_grau() << endl;
+        rfile << "Grau Máximo: " << gmax << endl;
+        rfile << "Média dos Graus: " << medg << endl;
+        rfile << "Mediana dos Graus: " << medianag << endl;
         rfile << "Quantidade de Componentes Conexas: " << x.size() << endl;
         list<list<int> >::iterator itr;
         for(itr = x.begin(); itr != x.end(); itr++){
