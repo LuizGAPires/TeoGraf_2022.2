@@ -1,8 +1,6 @@
-#include<stack> // pilha para DFS
 #include<iostream> // usado para "printar" no no terminal, utilizado durante os textes 
 #include<ctime> // usado para ver o tempo para rodar os algoritimos
 #include<list> // lista para a lista de adjacencia
-#include<queue> // fila para BFS 
 #include <fstream> // biblioteca usada para leitura/escrita do arquivo .txt
 #include <bits/stdc++.h> // utilizado para a função sort nos algoritimos de componentes conexas
 #include <limits> //utilizado para o infinito, no caso ((2^31) - 1)
@@ -20,14 +18,6 @@ public:
     Grafo(int V); // construtor
 
     void addAresta(int v1, int v2, float W); //adciona uma aresta no grafo
-
-    int grau(int v); // retorna o grau do vertice v
-
-    int gmax(); // retorna o maior grau do grafo
-
-    float media_grau(); // retorna a média de todos os graus
-
-    float mediana_grau(); //retorna a mediana dos graus
 
     void dijkstra(int v);
 
@@ -51,54 +41,6 @@ void Grafo::addAresta(int v1, int v2, float W)
     adj[v2].push_back(p2);
 }
 
-int Grafo::grau(int v)
-{
-        return adj[v].size();
-}
-
-int Grafo::gmax()
-{
-    int max = 0;
-    int atual;
-    int vmax;
-
-    for(int i = 0; i < V; i++){
-        atual = grau(i+1);
-        if(atual > max){
-            max = atual;
-            vmax = i+1;
-        }
-    }
-    return max;
-}
-
-float Grafo::media_grau()
-{
-    float soma = 0;
-    for(int i = 0; i < V; i++){
-        soma = soma + grau(i+1);
-    }
-    return (soma/V);
-}
-
-float Grafo::mediana_grau()
-{
-    float x[V];
-
-    for(int i = 0; i < V; i++){
-        x[i] = grau(i+1);
-    }
-
-    sort(x, x+V);
-
-    if(V%2 == 0){
-        return (x[(V/2)] + x[(V/2) - 1])/2;
-    }
-    else{
-        return x[V/2];
-    }
-}
-
 int Grafo::minimo(float f[], bool b[])
 {
     float min = std::numeric_limits<float>::infinity();
@@ -116,6 +58,7 @@ void Grafo::dijkstra(int v)
 {
     fstream distancias;
     float dist[V], peso;
+    float min = std::numeric_limits<float>::infinity();
     bool explorados[V];
     int menor, vert, s;
     s = v;
@@ -125,7 +68,7 @@ void Grafo::dijkstra(int v)
     }
     dist[v-1] = 0;
 
-    while(!explorados)
+    while(!explorados[v-1])
     {
         list<Par>::iterator it;
         for(it = adj[v].begin(); it != adj[v].end(); it++)
@@ -140,12 +83,12 @@ void Grafo::dijkstra(int v)
         explorados[v-1] = true;
         v = minimo(dist, explorados) + 1;
     }
-    distancias.open("dijkstra.txt", ios::out);
+    distancias.open("djikstra.txt", ios::out);
     if(distancias.is_open()){
         for(int i = 0; i < V; i++){
-            distancias << "Distância do vértice " << s << "até o vértice " << i+1 << ": " << dist[i] << endl;
+            distancias << "Distância do vértice " << s << " até o vértice " << i+1 << ": " << dist[i] << endl;
         }
-    }
+    }distancias.close();
 }
 
 void Grafo::dijkstraHeap(int v)
@@ -176,15 +119,15 @@ void Grafo::dijkstraHeap(int v)
     distancias.open("dijkstraHeap.txt", ios::out);
     if(distancias.is_open()){
         for(int i = 0; i < V; i++){
-            distancias << "Distância do vértice " << v << "até o vértice " << i+1 << ": " << dist[i] << endl;
+            distancias << "Distância do vértice " << v << " até o vértice " << i+1 << ": " << dist[i] << endl;
         }
-    }
+    }distancias.close();
 }
 
 void Grafo::primMST(int v)
 {
     int u, vert;
-    float peso;
+    float peso, pesot;
     fstream MST;
     priority_queue< Par, vector<Par> , greater<Par> > heap;
     vector<float> chave(V, std::numeric_limits<float>::infinity());
@@ -221,9 +164,12 @@ void Grafo::primMST(int v)
     MST.open("MST.txt", ios::out);
     if(MST.is_open()){
         for(int i = 0; i < V; i++){
+            pesot += chave[i];
             MST << "Pai de " << i+1 << ": " << pai[i] << endl;
         }
+        MST << "Peso total: " << pesot;
     }
+    MST.close();
 }
 
 
@@ -233,10 +179,7 @@ int main(){
     int num, num1;
     float peso;
     int v;
-    int gmax;
-    float medg, medianag;
    fstream newfile, rfile;
-
 
    newfile.open("grafoteste.txt" ,ios::in); //abre o arquivo .txt apenas para leitura
    if (newfile.is_open())
@@ -263,36 +206,9 @@ int main(){
             }
             else{
                 graph.dijkstra(1);
-                //graph.dijkstraHeap(1);
+                graph.dijkstraHeap(1);
             }
-
             graph.primMST(1);
-            //medg = graph.media_grau();
-            //medianag = graph.mediana_grau();
-            //x = graph.conexa();
         }
-
         newfile.close();
-        //system("pause");  usado para calcular o tamanho dos grafos em memória
-        
-        /*rfile.open("resposta.txt", ios::out);// cria um arquivo e escreve no mesmo
-        if (rfile.is_open()){
-        rfile << "Número de Arestas: " << count << endl;
-        rfile << "Número de Vertices: " << v << endl;
-        rfile << "Grau Máximo: " << gmax << endl;
-        rfile << "Média dos Graus: " << medg << endl;
-        rfile << "Mediana dos Graus: " << medianag << endl;
-        rfile << "Quantidade de Componentes Conexas: " << x.size() << endl;
-        list<list<int> >::iterator itr;
-        for(itr = x.begin(); itr != x.end(); itr++){
-            list<int>tl = *itr;
-            list<int>::iterator it;
-            rfile << "{ ";
-            for(it = tl.begin(); it != tl.end(); it++){
-                rfile << *it << " ";
-            }
-            rfile << "}" << " | Tamanho da componente: " << tl.size();
-            rfile << endl << "--//--" << endl;
-        }
-    }rfile.close();*/
 } 
