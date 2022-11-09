@@ -58,9 +58,10 @@ void Grafo::dijkstra(int v)
 {
     fstream distancias;
     float dist[V], peso;
-    float min = std::numeric_limits<float>::infinity();
+    clock_t ini;
     bool explorados[V];
     int menor, vert, s;
+    ini = clock();
     s = v;
     for(int i = 0; i < V; i++){
         dist[i] = std::numeric_limits<float>::infinity();
@@ -83,8 +84,10 @@ void Grafo::dijkstra(int v)
         explorados[v-1] = true;
         v = minimo(dist, explorados) + 1;
     }
+    ini = clock() - ini;
     distancias.open("djikstra.txt", ios::out);
     if(distancias.is_open()){
+        distancias << "Tempo de execução: " << (double(ini))/CLOCKS_PER_SEC << endl;
         for(int i = 0; i < V; i++){
             distancias << "Distância do vértice " << s << " até o vértice " << i+1 << ": " << dist[i] << endl;
         }
@@ -96,9 +99,14 @@ void Grafo::dijkstraHeap(int v)
     fstream distancias;
     int u, vert;
     float peso;
+    clock_t ini;
+    ini = clock();
+    vector<int> pai(V);
     priority_queue<Par, vector<Par>, greater<Par> > heap;
     vector<float> dist(V, std::numeric_limits<float>::infinity());
     dist[v-1] = 0;
+    pai[v-1] = -1;
+
 
     list<Par>::iterator it;
     heap.push({0, v});
@@ -113,65 +121,58 @@ void Grafo::dijkstraHeap(int v)
             if(dist[vert-1] > dist[u-1] + peso){
                 dist[vert-1] = dist[u-1] + peso;
                 heap.push({dist[vert-1], vert});
+                pai[vert-1] = u;
             }
         }
     }
+    ini = clock() - ini;
     distancias.open("dijkstraHeap.txt", ios::out);
     if(distancias.is_open()){
+        distancias << "Tempo de execução: " << (double(ini))/CLOCKS_PER_SEC << endl;
         for(int i = 0; i < V; i++){
-            distancias << "Distância do vértice " << v << " até o vértice " << i+1 << ": " << dist[i] << endl;
+            //distancias << "Distância do vértice " << v << " até o vértice " << i+1 << ": " << dist[i] << endl;
+            distancias << "Pai de " << i+1 << ": " << pai[i] << endl;
         }
     }distancias.close();
 }
 
 void Grafo::primMST(int v)
 {
-    int u, vert;
-    float peso, pesot;
     fstream MST;
-    priority_queue< Par, vector<Par> , greater<Par> > heap;
-    vector<float> chave(V, std::numeric_limits<float>::infinity());
-    vector<int> pai(V, -1);
-    vector<bool> explorados(V, false);
-
-    heap.push({0, v});
-    chave[v-1] = 0;
-
-    while(!heap.empty())
-    {
-        u = heap.top().second;
-        heap.pop();
-
-        if(explorados[u-1] == true){
-            continue;
+    float pesos[V], peso, pesot = 0;
+    bool explorados[V];
+    int vert, s, pai[V];
+    s = v;
+    for(int i = 0; i < V; i++){
+        pesos[i] = std::numeric_limits<float>::infinity();
+        explorados[i] = false;
+        pai[i] = -1;
         }
+    pesos[v-1] = 0;
 
+    for (int cont = 0; cont < V-1; cont++){
+        int u = minimo(pesos, explorados) + 1;
         explorados[u-1] = true;
+
         list<Par>::iterator it;
-        for (it = adj[u].begin(); it != adj[u].end(); it++){
+        for(it = adj[u].begin(); it != adj[u].end(); it++){
             vert = it->first;
             peso = it->second;
-
-            if(explorados[vert - 1] == false && chave[vert-1] > peso){
-                chave[vert - 1] = peso;
-                heap.push(make_pair(chave[vert-1], vert));
+            if(explorados[vert-1] == false && pesos[vert - 1] > peso){
+                pesos[vert-1] = peso;
                 pai[vert-1] = u;
             }
         }
     }
-
-    
-    MST.open("MST.txt", ios::out);
+    MST.open("Mst.txt", ios::out);
     if(MST.is_open()){
         for(int i = 0; i < V; i++){
-            pesot += chave[i];
+            pesot += pesos[i];
             MST << "Pai de " << i+1 << ": " << pai[i] << endl;
         }
-        MST << "Peso total: " << pesot;
-    }
-    MST.close();
+        MST << "Peso total: " << pesot << endl;
+    }MST.close();
 }
-
 
 int main(){
     int count = 0;
@@ -181,7 +182,7 @@ int main(){
     int v;
    fstream newfile, rfile;
 
-   newfile.open("grafo_W_1_1.txt" ,ios::in); //abre o arquivo .txt apenas para leitura
+   newfile.open("rede_colaboracao.txt" ,ios::in); //abre o arquivo .txt apenas para leitura
    if (newfile.is_open())
    {    
         newfile >> v;
@@ -204,10 +205,11 @@ int main(){
                 cout << "Não é possível calcular as distâncias com os algoritmos atuais";
             }
             else{
-                graph.dijkstra(10);
-                //graph.dijkstraHeap(10);
+                //graph.dijkstra(10);
+                graph.dijkstraHeap(2722);
             }
-            graph.primMST(10);
+            //graph.primMST(1);
         }
         newfile.close();
+        return 1;
 } 
