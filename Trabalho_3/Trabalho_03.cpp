@@ -171,28 +171,41 @@ int main(){
     int count = 0;
     int num, num1;
     int peso;
+    int maiorpeso = 0;
     int v;
-    bool direcionado = true;
+    clock_t ini;
     fstream newfile, rfile;
+    string escolha;
 
-   newfile.open("grafo_rf_1.txt" ,ios::in); //abre o arquivo .txt apenas para leitura
+    cout << "Escolha o tipo de Grafo(1 -> Grafos normais ou 2 -> Redes de Fluxo): ";
+    cin >> escolha;
+
+
+   newfile.open("grafo_rf_5.txt" ,ios::in); //abre o arquivo .txt apenas para leitura
    if (newfile.is_open())
    {    
         newfile >> v;
         
-            Grafo graph(v, direcionado);    // Representação do grafo normal
-            Grafo graphR(v, direcionado);   // Representação do grafo residual
+            Grafo graph(v, true);    // Representação do grafo normal
+            Grafo graphR(v, true); // Representação do grafo residual
             do{
             newfile >> num;
             newfile >> num1;
             newfile >> peso;
             if (!newfile.fail()) {
-                count++;
-                graphR.addAresta(num, num1, peso);
-
+                if(count < 20 && peso > maiorpeso) maiorpeso = peso;
+                graph.addAresta(num, num1, peso);
+                if(escolha == "2"){
+                    graphR = graph;
+                }
             }
             }while(!newfile.fail());
-            cout << graphR.fordFulkerson(graph, 1, 4);
+            
+            //ini = clock();
+            cout << graph.fordFulkerson(graphR, 1, 2) << endl;
+            //ini = clock() - ini;
+            //cout << "Tempo de execução: " << (double(ini))/CLOCKS_PER_SEC << endl;
+ 
         }
         newfile.close();
         return 1;
