@@ -7,4 +7,5 @@ This repository contains three separate C++ programs developed as part of the **
 - `Trabalho 1/TeoGraf_Trab01.cpp`  
   Implementation of **Graph Representation and Traversal**: Basic manipulation of graphs including BFS, DFS, and connectivity checks.
 
--
+- `Trabalho 2/trab2.cpp`  
+  A program dedicated to **Prim Minimum Spanning Tree (MST)** algorithm and **Dijkstra's algorithm**.
