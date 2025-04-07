@@ -21,7 +21,7 @@ Key Concepts:
 
 ### 🔹 Trabalho 2:
 
-**File**: [`trab2.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho%202/trab2.cpp)
+**File**: [`trab2.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho%202/TeoGraf_Trab02.cpp)
 
 This project builds upon the fundamentals and focuses on:
 - Representation of **directed** graphs
@@ -35,7 +35,7 @@ Key Concepts:
 
 ### 🔹 Trabalho 3:
 
-**File**: [`Trab_03_ver_final.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho_3/Trab_03_ver_final.cpp)
+**File**: [`Trab_03_ver_final.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho_3/TeoGraf_Trab03.cpp)
 
 This project implements **maximum flow** computation using the **Ford-Fulkerson algorithm** based on:
 - Capacity-constrained directed graphs
