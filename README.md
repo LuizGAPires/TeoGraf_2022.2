@@ -4,8 +4,43 @@ This repository contains three separate C++ programs developed as part of the **
 ---
 ## 📁 Project Structure
 
-- `Trabalho 1/TeoGraf_Trab01.cpp`  
-  Implementation of **Graph Representation and Traversal**: Basic manipulation of graphs including BFS, DFS, and connectivity checks.
+### 🔹 Trabalho 1:
 
-- `Trabalho 2/trab2.cpp`  
-  A program dedicated to **Prim Minimum Spanning Tree (MST)** algorithm and **Dijkstra's algorithm**.
+**File**: [`TeoGraf_Trab01.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho%201/TeoGraf_Trab01.cpp)
+
+This project implements the foundational components of graphs:
+- Representation of **undirected** graphs using adjacency lists and adjacency matrix
+- Insertion and removal of vertices and edges
+- DFS and BFS traversals
+- Degree calculation and connectivity checks
+
+Key Concepts:  
+➡️ Graph representation, Traversal algorithms (DFS/BFS), Graph manipulation
+
+---
+
+### 🔹 Trabalho 2:
+
+**File**: [`trab2.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho%202/trab2.cpp)
+
+This project builds upon the fundamentals and focuses on:
+- Representation of **directed** graphs
+- Implementation of **Prim Minimum Spanning Tree (MST)** algorithm
+- Implementation of **Dijkstra's algorithm**
+
+Key Concepts:  
+➡️ Graph representation, MST, Dijkstra algorithm
+
+---
+
+### 🔹 Trabalho 3:
+
+**File**: [`Trab_03_ver_final.cpp`](https://github.com/LuizGAPires/TeoGraf_2022.2/blob/main/Trabalho_3/Trab_03_ver_final.cpp)
+
+This project implements **maximum flow** computation using the **Ford-Fulkerson algorithm** based on:
+- Capacity-constrained directed graphs
+- Residual graphs and augmenting paths
+- Use of Breadth-first Search to find paths with available capacity
+
+Key Concepts:  
+🔁 Ford-Fulkerson, Residual graphs, Flow networks, Augmenting paths
