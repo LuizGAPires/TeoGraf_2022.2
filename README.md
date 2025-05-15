@@ -1,5 +1,5 @@
 # 🔗 Graph Theory Project – C++ Implementation
-This repository contains three separate C++ programs developed as part of the **Graph Theory course (Teoria dos Grafos)** of the second semester of 2022. Each assignment focuses on different aspects of graph theory, implemented using foundational algorithms and data structures relevant to the subject.
+This repository contains three separate C++ programs developed as part of the **Graph Theory course (Teoria dos Grafos)** during the second semester of 2022. Each assignment focuses on different aspects of graph theory, implemented using foundational algorithms and data structures relevant to the subject.
 
 ---
 ## 📁 Project Structure
